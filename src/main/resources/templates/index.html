@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Entrada</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1>Identificação</h1>
+    <form method="post" th:action="@{/login}">
+        <div class="form-group">
+            <label th:for="username">Login</label>
+            <input type="text" class="form-control" name="username" th:required="required">
+        </div>
+        <div class="form-group">
+            <label th:for="password">Senha</label>
+            <input type="password" class="form-control" name="password" th:required="required">
+        </div>
+        <button type="submit" class="btn btn-primary" th:text="Entrar"/>
+        <a th:href="@{/register}" class="btn btn-success">Registrar</a>
+    </form>
+</div>
+</body>
+</html>

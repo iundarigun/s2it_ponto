@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Entrada</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <div th:if="${ERROR_MESSAGES != null and !ERROR_MESSAGES.isEmpty()}">
+        <th:block th:each="error : ${ERROR_MESSAGES}">
+            <div th:text="*{error}" class="alert alert-danger"/>
+        </th:block>
+    </div>
+    <div th:if="${SUCCESS_MESSAGE != null}" th:text="${SUCCESS_MESSAGE}" class="alert alert-success"/>
+    <h1><th:block th:text="${user.name}"/></h1>
+    <div class="panel panel-default">
+        <div class="form-group col-md-3"><a th:href="@{/period/week?date={previousWeek}(previousWeek=${previousWeek})}">Semana anterior</a>
+        </div>
+        <div class="form-group col-md-3">Semana de <th:block th:text="${date}"/>
+        </div>
+        <div class="form-group col-md-3"><a th:href="@{/period/week?date={nextWeek}(nextWeek=${nextWeek})}">Semana posterior</a>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <th:block th:each="day : ${week}">
+            <div class="panel-body row" th:style="${day.holiday || day.weekend ?'background-color:#898989;':'background-color:none;'}">
+                <div class="col-sm"><th:block th:text="${day.day}"/></div>
+                <th:block th:each="period : ${day.periodList}">
+                    <div class="col-sm"><th:block th:text="${period.startTime}"/></div>
+                    <div class="col-sm"><th:block th:text="${period.endTime}"/></div>
+                </th:block>
+            </div>
+            <form th:action="@{/period/day}" th:method="DELETE">
+                <input type="hidden" name="date" th:value="${day.day}"/>
+                <a th:href="@{/period/day?date={date}(date=${day.day})}" class="btn btn-success">Editar</a>
+                <button type="submit" class="btn btn-default">Remover</button>
+            </form>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

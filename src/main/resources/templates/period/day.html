@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Entrada</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="container">
+    <div th:if="${ERROR_MESSAGES != null and !ERROR_MESSAGES.isEmpty()}">
+        <th:block th:each="error : ${ERROR_MESSAGES}">
+            <div th:text="*{error}" class="alert alert-danger"/>
+        </th:block>
+    </div>
+    <div th:if="${SUCCESS_MESSAGE != null}" th:text="${SUCCESS_MESSAGE}" class="alert alert-success"/>
+    <h1>
+        <th:block th:text="${user.name}"/>
+    </h1>
+    <form th:method="post" th:action="@{/period/day}" th:object="${day}">
+        <input type="hidden" th:field="*{day}"/>
+        <input type="hidden" th:value="${user.id}" name="userId"/>
+        <div class="form-group">
+            <th:block th:each="period, rowStat : *{periodList}" th:class="${rowStat.even ? 'even' : 'odd'}">
+                <input type="text" th:field="*{periodList[__${rowStat.index}__].startTime}"/>
+                <input type="text" th:field="*{periodList[__${rowStat.index}__].endTime}"/>
+            </th:block>
+        </div>
+        <button type="submit" class="btn btn-success">Salvar</button>
+        <a th:href="@{/period/week?date={date}(date=${day.day})}" class="btn btn-default">Voltar</a>
+    </form>
+</div>
+</body>
+</html>

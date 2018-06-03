@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: s2it-ponto
+  datasource:
+    url: jdbc:postgresql://localhost:5432/s2it_ponto
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+holiday:
+  url: https://api.calendario.com.br/?json=true&token=b3Jpb2wuY2FuYWxpYXNAczJpdC5jb20uYnImaGFzaD0yMjc1Mzc0MA==
+
