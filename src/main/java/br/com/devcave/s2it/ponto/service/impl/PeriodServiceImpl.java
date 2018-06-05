@@ -144,6 +144,17 @@ public class PeriodServiceImpl implements PeriodService {
 
 
         periodDTOList.stream().sorted(Comparator.comparing(PeriodDTO::getStartTime));
+        // Validando superposição
+        periodDTOList.forEach( periodDTO ->
+                periodDTOList.stream().filter(
+                        p2-> isTimeBetween(periodDTO.getStartTime(),p2.getStartTime(),p2.getEndTime())
+                                || isTimeBetween(periodDTO.getEndTime(),p2.getStartTime(),p2.getEndTime()))
+                        .findFirst().ifPresent(p ->
+                        {
+                            throw new SuperimposePeriodException();
+                        }
+                )
+        );
         // Validar intervalos
         LocalTime comparing = null;
         for (PeriodDTO periodDTO:periodDTOList){
@@ -152,20 +163,9 @@ public class PeriodServiceImpl implements PeriodService {
                 if (interval < 60){
                     throw new IntervalLimitException();
                 }
-                comparing = periodDTO.getEndTime();
             }
+            comparing = periodDTO.getEndTime();
         }
-        // Validando superposição
-        periodDTOList.forEach( periodDTO ->
-            periodDTOList.stream().filter(
-                        p2-> isTimeBetween(periodDTO.getStartTime(),p2.getStartTime(),p2.getEndTime())
-                          || isTimeBetween(periodDTO.getEndTime(),p2.getStartTime(),p2.getEndTime()))
-                        .findFirst().ifPresent(p ->
-                   {
-                        throw new SuperimposePeriodException();
-                    }
-                )
-            );
     }
 
     private boolean isTimeBetween(LocalTime target, LocalTime startTime, LocalTime endTime){
