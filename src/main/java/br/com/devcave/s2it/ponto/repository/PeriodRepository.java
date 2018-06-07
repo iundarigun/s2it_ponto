@@ -9,4 +9,8 @@ import java.util.List;
 
 public interface PeriodRepository extends CrudRepository<Period, Long> {
     List<Period> findByDayDayAndDayUser(LocalDate day, User user);
+
+    Period findFirstByDayDayAndDayUserOrderByStartTime(LocalDate day, User user);
+
+    Period findFirstByDayDayAndDayUserOrderByStartTimeDesc(LocalDate day, User user);
 }

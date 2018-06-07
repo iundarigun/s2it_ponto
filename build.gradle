@@ -34,6 +34,7 @@ ext{
 	springCloudVersion = "Finchley.RC2"
 	bootstrapVersion = '3.3.7'
 	webjarsLocatorVersion = '0.32'
+	apachePoiVersion ='3.17'
 }
 
 
@@ -52,6 +53,10 @@ dependencies {
 
 	compile("org.mapstruct:mapstruct-jdk8:${mapstructVersion}")
 	compile("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+
+	compile("org.apache.poi:poi:${apachePoiVersion}")
+	compile("org.apache.poi:poi-ooxml:${apachePoiVersion}")
+	compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
 	compile("io.springfox:springfox-swagger2:${swaggerVersion}")
 	compile("io.springfox:springfox-swagger-ui:${swaggerVersion}")

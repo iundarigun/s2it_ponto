@@ -33,19 +33,17 @@ public class LoginController extends BaseController{
 
     @GetMapping("register")
     public ModelAndView register(){
-        return new ModelAndView("register");
+        return new ModelAndView("register").addObject("user", new User());
     }
 
     @PostMapping("register")
-    public ModelAndView register(@RequestParam String username, @RequestParam String name,
-                                 @RequestParam String password, @RequestParam String confirmpassword){
-        if (!password.equals(confirmpassword)){
+    public ModelAndView register(User user, @RequestParam String confirmpassword){
+        if (!user.getPassword().equals(confirmpassword)){
             return new ModelAndView("register");
         }
-        if (userRepository.existsByUsername(username)){
+        if (userRepository.existsByUsername(user.getUsername())){
             return new ModelAndView("register");
         }
-        User user = User.builder().name(name).username(username).password(password).build();
 
         userRepository.save(user);
 

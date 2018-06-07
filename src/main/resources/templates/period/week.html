@@ -41,6 +41,12 @@
             </form>
         </th:block>
     </div>
+    <div class="form-group"><a th:href="@{/period/month?date={date}&minusMonth=0(date=${date})}">Mês atual</a>
+    </div>
+    <div class="form-group"><a th:href="@{/period/month?date={date}&minusMonth=1(date=${date})}">Mês passado</a>
+    </div>
+    <div class="form-group"><a th:href="@{/period/month?date={date}&minusMonth=2(date=${date})}">Mês retrassado</a>
+    </div>
 </div>
 </body>
 </html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Entrada</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1><th:block th:text="${month}"/></h1>
+    <div class="panel panel-default">
+        <div class="form-group">
+            <label>Dias lançados:</label>
+            <div class="input-group">
+                <span th:text="${monthSummary.fillDays}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Total de horas:</label>
+            <div class="input-group">
+                <span th:text="${monthSummary.totalHours}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Lançamento em finais de semana/feriados:</label>
+            <div class="input-group">
+                <span th:text="${monthSummary.hoursInWeekendHoliday? 'Sim': 'Não'}"/>
+            </div>
+        </div>
+    </div>
+    <form th:if="${monthSummary.fillDays > 0}" th:action="@{/period/month/export}" th:method="GET">
+        <input type="hidden" name="date" th:value="${date}"/>
+        <button type="submit" class="btn btn-default">Exportar</button>
+    </form>
+
+</div>
+</body>
+</html>

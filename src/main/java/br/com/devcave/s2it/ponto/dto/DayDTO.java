@@ -21,4 +21,5 @@ public class DayDTO {
     private List<PeriodDTO> periodList;
     private boolean holiday;
     private boolean weekend;
+
 }

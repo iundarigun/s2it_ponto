@@ -3,6 +3,7 @@ package br.com.devcave.s2it.ponto.service;
 import br.com.devcave.s2it.ponto.domain.Period;
 import br.com.devcave.s2it.ponto.domain.User;
 import br.com.devcave.s2it.ponto.dto.DayDTO;
+import br.com.devcave.s2it.ponto.dto.MonthSummaryDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -19,6 +20,9 @@ public interface PeriodService {
 
     void deleteDay(User user, LocalDate date);
 
-    @Transactional
     void persistDay(User user, DayDTO dayDTO);
+
+    MonthSummaryDTO monthSummary(LocalDate date, User user);
+
+    byte[] exportMonth(LocalDate date, User user);
 }

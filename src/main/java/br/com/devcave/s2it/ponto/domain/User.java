@@ -28,6 +28,12 @@ public class User implements UserDetails  {
 
     private String password;
 
+    private String costCenter;
+
+    private String team;
+
+    private String manager;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
