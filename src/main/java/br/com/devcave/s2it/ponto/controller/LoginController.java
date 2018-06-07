@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+
 @Slf4j
 @Controller
 public class LoginController extends BaseController{
@@ -37,15 +40,18 @@ public class LoginController extends BaseController{
     }
 
     @PostMapping("register")
-    public ModelAndView register(User user, @RequestParam String confirmpassword){
+    public ModelAndView register(User user, @RequestParam String confirmpassword, HttpServletRequest request){
         if (!user.getPassword().equals(confirmpassword)){
+            request.setAttribute(ERROR_MESSAGES, Collections.singletonList("O password não coincide"));
             return new ModelAndView("register");
         }
         if (userRepository.existsByUsername(user.getUsername())){
+            request.setAttribute(ERROR_MESSAGES, Collections.singletonList("O usuário já está cadastrado"));
             return new ModelAndView("register");
         }
 
         userRepository.save(user);
+        request.setAttribute(SUCCESS_MESSAGE, "Usuário cadastrado com sucesso");
 
         return new ModelAndView("index");
     }

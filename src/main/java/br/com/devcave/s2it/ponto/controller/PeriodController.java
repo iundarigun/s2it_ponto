@@ -6,10 +6,6 @@ import br.com.devcave.s2it.ponto.dto.MonthSummaryDTO;
 import br.com.devcave.s2it.ponto.dto.PeriodDTO;
 import br.com.devcave.s2it.ponto.exception.PeriodValidationException;
 import br.com.devcave.s2it.ponto.service.PeriodService;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -24,13 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,8 +53,10 @@ public class PeriodController extends BaseController {
     }
 
     @DeleteMapping("day")
-    public ModelAndView deleteDay(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date){
+    public ModelAndView deleteDay(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, RedirectAttributes redirectAttributes){
         periodService.deleteDay(getUser(), date);
+
+        redirectAttributes.addFlashAttribute(SUCCESS_MESSAGE, "Períodos removidos com sucesso");
 
         StringBuilder url = new StringBuilder()
                 .append("redirect:/period/week?date=")
@@ -110,7 +104,7 @@ public class PeriodController extends BaseController {
     }
 
     @GetMapping("month/export")
-    public void exportMonth(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, HttpServletResponse response){
+    public ModelAndView exportMonth(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date, HttpServletRequest request, HttpServletResponse response){
         try (final ServletOutputStream outputStream = response.getOutputStream()){
             byte[] bytes = periodService.exportMonth(date, getUser());
 
@@ -121,8 +115,10 @@ public class PeriodController extends BaseController {
             outputStream.write(bytes);
             outputStream.flush();
         }catch (Exception e){
-
+            request.setAttribute(ERROR_MESSAGES, Collections.singletonList(e.getMessage()));
+            monthSummary(date,0);
         }
+        return null;
     }
 
     private ModelAndView getDayModelAndView(User user, DayDTO dayDTO) {

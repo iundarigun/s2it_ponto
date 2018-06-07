@@ -12,6 +12,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/common/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
